@@ -221,7 +221,7 @@ public class SwipeLayout extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isSwipeViewTarget(event) || isMoving()) {
+        if (isEnabledSwipe && (isSwipeViewTarget(event) || isMoving())) {
             gestureDetector.onTouchEvent(event);
             dragHelper.processTouchEvent(event);
             return true;
@@ -679,10 +679,6 @@ public class SwipeLayout extends FrameLayout {
 
         @Override
         public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
-            if (!isEnabledSwipe) {
-                return CLOSE_POSITION;
-            }
-
             switch (currentDirection) {
                 case LEFT:
                     return clampLeftViewPosition(left);
@@ -1024,6 +1020,7 @@ public class SwipeLayout extends FrameLayout {
 
     public interface SwipeActionsListener {
         void onOpen(int direction, boolean isContinuous);
+
         void onClose();
     }
 }
